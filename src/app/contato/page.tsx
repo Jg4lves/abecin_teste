@@ -21,14 +21,22 @@ export default function Contato() {
 		const fetchData = async () => {
 			try {
 				const data = await ContatoService.get();
-				const emailArray: Email[] = Object.entries(data.emails).map(
-					([key, value]) => ({
-						cargo: key as string,
-						endereco: value as string
-					})
-				)
-
-				setEmails(emailArray)
+				if (
+					typeof data === 'object' &&
+					data !== null &&
+					'emails' in data &&
+					typeof (data as any).emails === 'object'
+				) {
+					const emailArray: Email[] = Object.entries((data as { emails: Record<string, string> }).emails).map(
+						([key, value]) => ({
+							cargo: key as string,
+							endereco: value as string
+						})
+					)
+					setEmails(emailArray)
+				} else {
+					throw new Error('Formato de dados inválido')
+				}
 			} catch (err) {
 				if (err instanceof Error) {
 					console.error(err.message)
