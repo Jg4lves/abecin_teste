@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import PageContent from "@/components/layout/PageContent";
 import PageTitle from "@/components/layout/PageTitle";
 import React, { useState, useEffect } from "react";
@@ -73,7 +74,7 @@ export default function AssociadosAno({ params }: { params: Promise<{ ano: strin
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                         {instituicoes.map((instituicao: AssociadosInstitucional, index: number) => (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img key={index} src={instituicao.thumbnail} alt={instituicao.titulo} className="w-36 h-auto" />
+                            <Image key={index} src={instituicao.thumbnail} alt={instituicao.titulo} className="w-36 h-auto" />
                         ))}
                     </div>
                 ) : (

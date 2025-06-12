@@ -1,4 +1,3 @@
-import PageContent from '@/components/layout/PageContent'
 import PageTitle from '@/components/layout/PageTitle'
 import SectionTitle from '@/components/layout/SectionTitle'
 import Iconsbar from '@/components/sobre/Iconsbar'
