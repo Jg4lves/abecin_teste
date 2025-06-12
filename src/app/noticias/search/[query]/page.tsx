@@ -1,5 +1,3 @@
-'use client';
-
 import PageContent from "@/components/layout/PageContent";
 import PageTitle from "@/components/layout/PageTitle";
 import NoticiasService from "@/utils/services/noticias";
