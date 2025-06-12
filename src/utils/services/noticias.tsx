@@ -36,4 +36,3 @@ class NoticiasService {
 }
 
 export default NoticiasService;
-//
