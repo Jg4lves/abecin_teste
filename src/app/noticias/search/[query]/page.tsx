@@ -1,3 +1,5 @@
+'use client';
+
 import PageContent from "@/components/layout/PageContent";
 import PageTitle from "@/components/layout/PageTitle";
 import NoticiasService from "@/utils/services/noticias";
@@ -5,8 +7,11 @@ import { useState, useEffect } from "react";
 import Noticia from "@/types/Noticia";
 import parse from "html-react-parser";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
-export default function SearchPage({ params }: { params: { query: string } }) {
+export default function SearchPage() {
+    const searchParams = useSearchParams();
+    const query = searchParams.get('query') ?? '';
     const [noticias, setNoticias] = useState<Noticia[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -14,7 +19,7 @@ export default function SearchPage({ params }: { params: { query: string } }) {
     useEffect(() => {
         const fetchNoticias = async () => {
             try {
-                const response = await NoticiasService.searchNoticias(params.query);
+                const response = await NoticiasService.searchNoticias(query);
                 setNoticias(response);
             } catch (err) {
                 if (err instanceof Error) {
@@ -29,7 +34,7 @@ export default function SearchPage({ params }: { params: { query: string } }) {
         };
 
         fetchNoticias();
-    }, [params.query]);
+    }, [query]);
 
     if (loading)
         return (
@@ -47,7 +52,7 @@ export default function SearchPage({ params }: { params: { query: string } }) {
 
     return (
         <PageContent>
-            <PageTitle title={`Resultados da busca: "${params.query}"`} />
+            <PageTitle title={`Resultados da busca: "${query}"`} />
             <div className="flex mt-12 pt-8 flex-col gap-4">
                 {noticias.length > 0 ? (
                     <div className="flex flex-col gap-12">
@@ -78,7 +83,7 @@ export default function SearchPage({ params }: { params: { query: string } }) {
                     </div>
                 ) : (
                     <p className="text-center text-lg text-gray-500">
-                        Nenhuma notícia encontrada para &quot;{params.query}&quot;.
+                        Nenhuma notícia encontrada para &quot;{query}&quot;.
                     </p>
                 )}
             </div>
