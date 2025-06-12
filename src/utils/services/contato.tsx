@@ -2,7 +2,7 @@ import api from '@/utils/api'
 
 class ContatoService {
 
-    static async get(): Promise<any> {
+    static async get(): Promise<unknown> {
         try {
             const response = await api.get('/contatos');
             return response.data;
