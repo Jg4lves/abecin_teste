@@ -7,11 +7,30 @@ import { useState, useEffect } from "react";
 import Noticia from "@/types/Noticia";
 import parse from "html-react-parser";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
-export default function SearchPage() {
-    const searchParams = useSearchParams();
-    const query = searchParams.get('query') ?? '';
+// Custom parser options to handle nested anchor tags
+const parserOptions = {
+    replace: (domNode: any) => {
+        if (domNode.type === 'tag' && domNode.name === 'a') {
+            // Check if this anchor tag contains other anchor tags
+            const hasNestedAnchors = domNode.children?.some((child: any) =>
+                child.type === 'tag' && child.name === 'a'
+            );
+
+            if (hasNestedAnchors) {
+                // Replace nested anchor with span to avoid hydration error
+                return {
+                    type: 'tag',
+                    name: 'span',
+                    attribs: { ...domNode.attribs, style: 'color: blue; text-decoration: underline; cursor: pointer;' },
+                    children: domNode.children
+                };
+            }
+        }
+    }
+};
+
+export default function SearchPage({ params }: { params: { query: string } }) {
     const [noticias, setNoticias] = useState<Noticia[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -19,7 +38,7 @@ export default function SearchPage() {
     useEffect(() => {
         const fetchNoticias = async () => {
             try {
-                const response = await NoticiasService.searchNoticias(query);
+                const response = await NoticiasService.searchNoticias(params.query);
                 setNoticias(response);
             } catch (err) {
                 if (err instanceof Error) {
@@ -34,7 +53,7 @@ export default function SearchPage() {
         };
 
         fetchNoticias();
-    }, [query]);
+    }, [params.query]);
 
     if (loading)
         return (
@@ -52,7 +71,7 @@ export default function SearchPage() {
 
     return (
         <PageContent>
-            <PageTitle title={`Resultados da busca: "${query}"`} />
+            <PageTitle title={`Resultados da busca: "${params.query}"`} />
             <div className="flex mt-12 pt-8 flex-col gap-4">
                 {noticias.length > 0 ? (
                     <div className="flex flex-col gap-12">
@@ -74,7 +93,8 @@ export default function SearchPage() {
                                         {parse(
                                             noticia.conteudo.length > 300
                                                 ? `${noticia.conteudo.substring(0, 300)}...`
-                                                : noticia.conteudo
+                                                : noticia.conteudo,
+                                            parserOptions
                                         )}
                                     </div>
                                 </div>
@@ -83,7 +103,7 @@ export default function SearchPage() {
                     </div>
                 ) : (
                     <p className="text-center text-lg text-gray-500">
-                        Nenhuma notícia encontrada para &quot;{query}&quot;.
+                        Nenhuma notícia encontrada para &quot;{params.query}&quot;.
                     </p>
                 )}
             </div>

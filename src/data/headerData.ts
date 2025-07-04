@@ -42,47 +42,46 @@ const currentYear = year.toString()
 const headerData: MenuItem[] = [
 	{
 		label: 'A Abecin',
-		link: '/sobre',
+		link: '/',
 		submenu: [
-			{ label: 'Plano de Gestão', link: '/gestao' },
-			{ label: 'Gestões Anteriores', link: '/gestao/anteriores' },
-			{ label: 'Estatuto', link: '/estatuto' }
+			{ label: 'Estatuto', link: '/estatuto' },
+			{ label: 'Plano de Gestão', link: '/plano' },
+			{ label: 'Gestão Atual', link: '/gestao' },
+			{ label: 'Gestões Anteriores', link: '/gestao/anteriores' }
 		]
 	},
 	{
-		label: 'Associados',
+		label: 'Associadas/os',
 		link: '/associados',
 		submenu: [
-			{ label: 'Seja associado', link: '/associados/sejasocio' },
+			{ label: 'Seja associada/o', link: '/associados/sejasocio' },
 			{
-				label: `Associados ${currentYear}`,
+				label: `Associadas/os ${currentYear}`,
 				link: `/associados/${currentYear}`
 			},
-			{ label: 'Associados Anteriores', link: '/associados/anteriores' }
-		]
-	},
-	{
-		label: 'Publicações',
-		link: '/publicacoes',
-		submenu: [
-			{ label: 'Abecin', link: '/publicacoes/' },
-			{ label: 'Outras publicações', link: '/publicacoes/outras' }
-		]
-	},
-	{
-		label: 'Documentos',
-		link: '/documentos',
-		submenu: [
-			{ label: 'Abecin', link: '/documentos/abecin' },
-			{ label: 'Escolas', link: '/documentos/escolas' },
-			{ label: 'Atas e convocações', link: '/documentos/atas' },
-			{ label: 'Prestações de contas', link: '/documentos/transparencia' }
+			{ label: 'Associadas/os Anteriores', link: '/associados/anteriores' }
 		]
 	},
 	{
 		label: 'Prêmio TCC',
 		link: '/concursos',
 		submenu: []
+	},
+	{
+		label: 'Publicações',
+		link: '/publicacoes',
+		submenu: [
+			{ label: 'Abecin Editora', link: '/publicacoes' },
+			{ label: 'Rebecin', link: 'https://portal.abecin.org.br/rebecin', target: '_blank' },
+		]
+	},
+	{
+		label: 'Memória',
+		link: '/memoria',
+		submenu: [
+			{ label: 'Outras Publicações', link: '/publicacoes/outras' },
+			{ label: 'ABEBD', link: '/historico' }
+		]
 	},
 	{
 		label: 'Notícias',

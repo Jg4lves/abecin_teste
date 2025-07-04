@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import PageContent from "@/components/layout/PageContent"
 import PageTitle from "@/components/layout/PageTitle"
 import BoxPlano from "@/components/associados/BoxPlano";
@@ -59,7 +58,7 @@ export default function Sejasocio() {
                     </div>
                     <div className="flex flex-col gap-4 font-semibold">
                         <p className="mx-auto">Escaneie o QR Code para pagar via PIX</p>
-                        <Image src="/qr_code.svg" alt="QR Code para pagamento via PIX" className="w-48 h-48 mx-auto" />
+                        <img src="/qr_code.svg" alt="QR Code para pagamento via PIX" className="w-48 h-48 mx-auto" />
                         <p className="mx-auto">Ou copie a chave abaixo e insira-a manualmente</p>
                         <div className="flex mx-auto items-center gap-4">
                             <span className="px-10 py-2 border rounded bg-gray-100">{pixKey}</span>
@@ -67,7 +66,7 @@ export default function Sejasocio() {
                                 onClick={handleCopyToClipboard}
                                 className="px-4 py-2 h-full border-[1px] border-black text-white rounded hover:bg-gray-100"
                             >
-                                <Image src="/copy.svg" alt="Copiar chave PIX" className="w-4 h-4" />
+                                <img src="/copy.svg" alt="Copiar chave PIX" className="w-4 h-4" />
                             </button>
                         </div>
                     </div>

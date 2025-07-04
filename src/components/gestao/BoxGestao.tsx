@@ -4,36 +4,62 @@ import SectionTitle from '@/components/layout/SectionTitle';
 import TextBox from '@/components/sobre/TextBox';
 import { GestaoPeriodo, Gestao } from "@/types/Gestao";
 import GestaoService from "@/utils/services/gestao";
+import gestoesAbebd from '@/data/gestaoABEBD';
 
-export default function BoxGestao({ id, periodo }: GestaoPeriodo) {
+/**
+ * Componente BoxGestao - Exibe informações de gestão de uma associação
+ * 
+ * @param id - ID do período de gestão
+ * @param periodo - Período da gestão (ex: "2022-2025")
+ * @param associacao - Associação (padrão: 'ABECIN', opções: 'ABECIN' | 'ABEBD')
+ * 
+ * Exemplos de uso:
+ * <BoxGestao id={1} periodo="2022-2025" /> // Usa ABECIN por padrão
+ * <BoxGestao id={1} periodo="2022-2025" associacao="ABEBD" /> // Especifica ABEBD
+ */
+export default function BoxGestao({ id, periodo, associacao = 'ABECIN' }: GestaoPeriodo) {
     const [gestao, setGestao] = useState<Gestao>({} as Gestao);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await GestaoService.getGestaoByPeriodoId(id);
-                if ('message' in response && response.message === "Nenhum post encontrado para esta categoria.") {
-                    setError("Ainda não existem gestores cadastrados nesse período");
+            if (associacao === 'ABEBD') {
+                // Busca local
+                // Preferencialmente por id, mas pode ser por periodo se necessário
+                const gestaoLocal = gestoesAbebd[id - 1] || gestoesAbebd.find(g => g.periodo === periodo);
+                if (gestaoLocal) {
+                    setGestao(gestaoLocal);
+                    setError(null);
                 } else {
-                    setGestao(response as Gestao);
+                    setError('Gestão não encontrada nos dados locais.');
                 }
-            }
-            catch (err) {
-                if (err instanceof Error) {
-                    console.error(err.message);
-                    setError(err.message);
-                } else {
-                    console.error('Erro desconhecido', err);
-                }
-            } finally {
                 setLoading(false);
+            } else {
+                // Busca via API (comportamento padrão)
+                try {
+                    const response = await GestaoService.getGestaoByPeriodoId(id);
+                    if ('message' in response && response.message === "Nenhum post encontrado para esta categoria.") {
+                        setError("Ainda não existem gestores cadastrados nesse período");
+                    } else {
+                        setGestao(response as Gestao);
+                    }
+                }
+                catch (err) {
+                    if (err instanceof Error) {
+                        console.error(err.message);
+                        setError(err.message);
+                    } else {
+                        console.error('Erro desconhecido', err);
+                    }
+                } finally {
+                    setLoading(false);
+                }
             }
         };
 
         fetchData();
-    }, [id]);
+    }, [id, periodo, associacao]);
 
     if (loading)
         return (
@@ -47,7 +73,7 @@ export default function BoxGestao({ id, periodo }: GestaoPeriodo) {
 
     return (
         <div>
-            <PageTitle title={`Gestão ABECIN ${periodo}`} className="!text-2xl !font-medium mb-12" spanClassName="h-[0.4rem]" />
+            <PageTitle title={`Gestão ${associacao} ${periodo}`} className="!text-2xl !font-medium mb-12" spanClassName="h-[0.4rem]" />
             {error && (
                 <div className="text-center py-4 mt-8">
                     <p className="text-lg text-gray-600">{error}</p>

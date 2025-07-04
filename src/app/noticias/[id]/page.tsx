@@ -8,6 +8,28 @@ import Noticia from "@/types/Noticia";
 import parse from "html-react-parser"; // Importa o html-react-parser
 import Image from "next/image";
 
+// Custom parser options to handle nested anchor tags
+const parserOptions = {
+    replace: (domNode: any) => {
+        if (domNode.type === 'tag' && domNode.name === 'a') {
+            // Check if this anchor tag contains other anchor tags
+            const hasNestedAnchors = domNode.children?.some((child: any) =>
+                child.type === 'tag' && child.name === 'a'
+            );
+
+            if (hasNestedAnchors) {
+                // Replace nested anchor with span to avoid hydration error
+                return {
+                    type: 'tag',
+                    name: 'span',
+                    attribs: { ...domNode.attribs, style: 'color: blue; text-decoration: underline; cursor: pointer;' },
+                    children: domNode.children
+                };
+            }
+        }
+    }
+};
+
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const { id } = React.use(params);
     const [noticia, setNoticia] = useState<Noticia>({} as Noticia);
@@ -64,17 +86,19 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
                                 })}
                             </p>
                         </div>
-                        <Image
-                            src={noticia.thumbnail}
-                            alt={noticia.titulo}
-                            className="rounded-md w-full h-auto"
-                            width={800} // Adjust width as needed
-                            height={600} // Adjust height as needed
-                            priority // Optional: for LCP optimization
-                        />
+                        {noticia.thumbnail && (
+                            <Image
+                                src={noticia.thumbnail}
+                                alt={noticia.titulo}
+                                className="rounded-md w-full h-auto"
+                                width={800} // Largura da imagem de um post
+                                height={600} // Altura da imagem de um post
+                                priority // Optional: for LCP optimization
+                            />
+                        )}
                     </div>
                     <div className="noticia-conteudo space-y-4">
-                        {parse(noticia.conteudo)}
+                        {parse(noticia.conteudo, parserOptions)}
                     </div>
                 </div>
             </div>

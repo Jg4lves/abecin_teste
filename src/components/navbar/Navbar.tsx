@@ -61,8 +61,17 @@ export default function Navbar() {
 	}
 
 	// Handle desktop submenu item click
-	const handleDesktopSubmenuClick = async (link: string, e: React.MouseEvent) => {
-		e.stopPropagation()
+	const handleDesktopSubmenuClick = async (link: string, target?: string, e?: React.MouseEvent) => {
+		if (e) e.stopPropagation()
+
+		// If target is _blank, open in new tab
+		if (target === '_blank') {
+			window.open(link, '_blank', 'noopener,noreferrer')
+			setOpenSubmenu(null)
+			return
+		}
+
+		// Otherwise, use router navigation
 		try {
 			await router.push(link)
 			setOpenSubmenu(null)
@@ -144,7 +153,7 @@ export default function Navbar() {
 									{item.submenu.map((submenuItem, subIndex) => (
 										<button
 											key={subIndex}
-											onClick={(e) => handleDesktopSubmenuClick(submenuItem.link, e)}
+											onClick={(e) => handleDesktopSubmenuClick(submenuItem.link, submenuItem.target, e)}
 											className="px-4 py-2 hover:bg-[#670396] text-left"
 										>
 											{submenuItem.label}

@@ -47,8 +47,9 @@ export default function GestaoAnterior() {
                         key={periodo.id}
                         id={periodo.id}
                         periodo={periodo.periodo}
-                        slug={""}
-                        url={""} />
+                        slug={periodo.slug}
+                        url={periodo.url}
+                        associacao={periodo.associacao} />
                 ))}
             </div>
         </PageContent>

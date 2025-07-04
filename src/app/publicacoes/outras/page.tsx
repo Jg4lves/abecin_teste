@@ -65,7 +65,7 @@ export default function Outras() {
 
 	return (
 		<PageContent>
-			<PageTitle title="Outras publicações" />
+			<PageTitle title="Memória" />
 			<p className="mt-12 font-medium">
 				Conheça outras publicações relevantes na área:
 			</p>

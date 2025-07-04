@@ -4,6 +4,7 @@
 interface SubmenuItem {
     label: string;
     link: string;
+    target?: string; // Optional target for opening links in new tabs
   }
   
 /** Items principais que compõem o menu e o header */

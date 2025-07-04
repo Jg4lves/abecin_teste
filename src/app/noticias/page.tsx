@@ -103,7 +103,7 @@ export default function Home() {
 						Biblioteconomia, Ciência da Informação, Gestão da
 						Informação e Museologia.
 					</p>
-					<HomeButton />
+					<HomeButton link='concursos/2023' />
 				</section>
 				<section className="flex flex-col md:flex-row gap-4 justify-between">
 					<div className="flex flex-col w-fit md:max-w-[50%] gap-4">

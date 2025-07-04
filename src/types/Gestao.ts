@@ -29,6 +29,7 @@ export interface GestaoPeriodo {
 	periodo: string
 	slug: string
 	url: string
+	associacao?: 'ABECIN' | 'ABEBD'
 }
 
 export interface Gestores {

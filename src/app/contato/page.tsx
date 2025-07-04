@@ -17,47 +17,32 @@ export default function Contato() {
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState<string | null>(null)
 
-	interface ContatoResponse {
-		emails: Record<string, string>;
-	}
-
 	useEffect(() => {
-	const fetchData = async () => {
-		try {
-		const data = await ContatoService.get();
+		const fetchData = async () => {
+			try {
+				const data = await ContatoService.get();
+				const emailArray: Email[] = Object.entries(data.emails).map(
+					([key, value]) => ({
+						cargo: key as string,
+						endereco: value as string
+					})
+				)
 
-		if (
-			data &&
-			typeof data === 'object' &&
-			'emails' in data &&
-			typeof (data as ContatoResponse).emails === 'object' &&
-			(data as ContatoResponse).emails !== null
-		) {
-			const emailArray: Email[] = Object.entries((data as ContatoResponse).emails).map(
-			([key, value]) => ({
-				cargo: key,
-				endereco: value,
-			}),
-			);
-			setEmails(emailArray);
-		} else {
-			throw new Error('Formato de dados inválido');
+				setEmails(emailArray)
+			} catch (err) {
+				if (err instanceof Error) {
+					console.error(err.message)
+					setError(err.message)
+				} else {
+					console.error('Erro desconhecido', err)
+				}
+			} finally {
+				setLoading(false)
+			}
 		}
-		} catch (err) {
-		if (err instanceof Error) {
-			console.error(err.message);
-			setError(err.message);
-		} else {
-			console.error('Erro desconhecido', err);
-		}
-		} finally {
-		setLoading(false);
-		}
-	};
 
-	fetchData();
-	}, []);
-
+		fetchData()
+	}, [])
 
 	const getEmailByCargo = (cargo: string): string => {
 		const email = emails.find(

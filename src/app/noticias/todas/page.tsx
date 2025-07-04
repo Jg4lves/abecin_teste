@@ -8,6 +8,28 @@ import Noticia from "@/types/Noticia";
 import parse from "html-react-parser"; // Importa o html-react-parser
 import Link from "next/link";
 
+// Custom parser options to handle nested anchor tags
+const parserOptions = {
+    replace: (domNode: any) => {
+        if (domNode.type === 'tag' && domNode.name === 'a') {
+            // Check if this anchor tag contains other anchor tags
+            const hasNestedAnchors = domNode.children?.some((child: any) =>
+                child.type === 'tag' && child.name === 'a'
+            );
+
+            if (hasNestedAnchors) {
+                // Replace nested anchor with span to avoid hydration error
+                return {
+                    type: 'tag',
+                    name: 'span',
+                    attribs: { ...domNode.attribs, style: 'color: blue; text-decoration: underline; cursor: pointer;' },
+                    children: domNode.children
+                };
+            }
+        }
+    }
+};
+
 export default function Page() {
     const [noticias, setNoticias] = useState<Noticia[]>([]);
     const [loading, setLoading] = useState(true);
@@ -70,7 +92,8 @@ export default function Page() {
                                     {parse(
                                         noticia.conteudo.length > 300
                                             ? `${noticia.conteudo.substring(0, 300)}...`
-                                            : noticia.conteudo
+                                            : noticia.conteudo,
+                                        parserOptions
                                     )}
                                 </div>
                             </div>

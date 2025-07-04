@@ -99,6 +99,8 @@ export default function NavbarMobile({
                                                 <Link
                                                     key={sub.label}
                                                     href={sub.link}
+                                                    target={sub.target}
+                                                    rel={sub.target === '_blank' ? 'noopener noreferrer' : undefined}
                                                     onClick={() => {
                                                         setOpenSubmenu(null)
                                                         setIsMenuOpen(false)

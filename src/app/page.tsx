@@ -1,3 +1,4 @@
+import PageContent from '@/components/layout/PageContent'
 import PageTitle from '@/components/layout/PageTitle'
 import SectionTitle from '@/components/layout/SectionTitle'
 import Iconsbar from '@/components/sobre/Iconsbar'
@@ -41,38 +42,36 @@ export default function Sobre() {
 					</section>
 					<section className="flex flex-col gap-8">
 						<SectionTitle
-							title="A ABECIN é um espaço político que valoriza tanto a
-						discussão quanto a prática de novos saberes, guiada por
-						quatro linhas fundamentais."
+							title="A Abecin é, sobretudo, um espaço político no qual a discussão sobre a perspectiva da construção e experimentação de saberes novos é tão importante e significativa quanto à ação de praticar esses saberes conquistados."
 						/>
 						<div className="mx-auto flex flex-col md:grid md:grid-cols-2 gap-4 max-w-lg md:max-w-4xl">
 							<TextBox
 								tipo="info"
 								icone="fa-book"
-								titulo="Fundamentos do Conhecimento"
+								titulo="Saberes dos Conteúdos"
 								conteudo="Os saberes dos conteúdos do respectivo campo já existentes e prontos para serem utilizados, transmitidos, adaptados e transformados"
 							/>
 							<TextBox
 								tipo="info"
 								icone="fa-graduation-cap"
-								titulo="Transformando Conhecimento em Competência"
+								titulo="Saberes para a Formação de Competências"
 								conteudo="Os saberes de como realizar a transposição didática desses conteúdos para a formação das competências, habilidades e atitudes dos profissionais egressos dos cursos"
 							/>
 							<TextBox
 								tipo="info"
 								icone="fa-wrench"
-								titulo="Estratégias de Aprendizagem Eficazes"
+								titulo="Saberes sobre Métodos e Técnicas de Ensino"
 								conteudo="Os saberes sobre os melhores métodos e técnicas de ensino a serem empregados na formação das habilidades e das atitudes esperadas pelos usuários dos serviços prestados pelos egressos da escola"
 							/>
 							<TextBox
 								tipo="info"
 								icone="fa-chart-line"
-								titulo="Impacto na Formação Profissional"
+								titulo="Saberes Profissionais"
 								conteudo="Os saberes derivados da transposição didática e seu efeito na consolidação dos saberes profissionais nos egressos dos cursos"
 							/>
 						</div>
 					</section>
-					<section className="flex flex-col gap-6">
+					<section className="flex flex-col gap-6 ">
 						<div className="flex flex-col gap-4 items-center">
 							<SectionTitle title="Fomentando o Futuro da Profissão" />
 							<Iconsbar />
@@ -94,10 +93,13 @@ export default function Sobre() {
 							pesquisa sobre o ensino com todos os fenômenos materiais
 							ou não que constituem, fazem desenvolver e explicam o
 							modo de ser e de agir dos profissionais do campo das
-							profissões da informação e de seu futuro
+							profissões da informação e de seu futuro.
+						</p>
+						<p className="text-pretty">
+							Sob esta perspectiva, a Abecin é uma associação de educação instituída pelo campo de ensino e é parte integrante do sistema de conhecimento e de ação política das profissões da informação, representado pela Ciência da Informação.
 						</p>
 					</section>
-					<section>
+					<section className='flex flex-col gap-16 pb-16'>
 						<div className="bg-abecin-secondary bg-[url('/vector.png')] bg-no-repeat bg-[left_2rem_top_4rem] md:bg-[right_3rem_top_1rem] lg:bg-[right_5rem_top_2rem] lg:bg-[length:250px_220px] rounded-2xl py-12 px-8 md:px-28">
 							<p className="text-center text-pretty text-white font-bold">
 								Sua missão é, acima de tudo, fortalecer de maneira
@@ -107,6 +109,9 @@ export default function Sobre() {
 								diversos segmentos que compõem essa área de atuação.
 							</p>
 						</div>
+						<p className="text-pretty">
+							Com base nisso, a Abecin tece esforços para fomentar no corpo profissional, a partir da atuação educacional, o sentimento de sobrevivência ou permanência profissional. A consciência dessa dimensão constituiu entendimento básico entre os membros da Associação.
+						</p>
 					</section>
 				</div>
 			</div>

@@ -20,7 +20,12 @@ export default function FooterNav() {
 
 					<div>
 						{item.submenu.map(subItem => (
-							<Link key={subItem.label} href={subItem.link}>
+							<Link
+								key={subItem.label}
+								href={subItem.link}
+								target={subItem.target}
+								rel={subItem.target === '_blank' ? 'noopener noreferrer' : undefined}
+							>
 								<h2 className="text-xs mb-2 text-gray-300 hover:text-white">
 									{subItem.label}
 								</h2>
