@@ -1,9 +1,8 @@
-'use client';
+'use client'; 
 
 import PageContent from "@/components/layout/PageContent";
 import PageTitle from "@/components/layout/PageTitle";
 import NoticiasService from "@/utils/services/noticias";
-import { useState, useEffect } from "react";
 import Noticia from "@/types/Noticia";
 import parse from "html-react-parser";
 import Link from "next/link";
@@ -12,13 +11,11 @@ import Link from "next/link";
 const parserOptions = {
     replace: (domNode: any) => {
         if (domNode.type === 'tag' && domNode.name === 'a') {
-            // Check if this anchor tag contains other anchor tags
             const hasNestedAnchors = domNode.children?.some((child: any) =>
                 child.type === 'tag' && child.name === 'a'
             );
 
             if (hasNestedAnchors) {
-                // Replace nested anchor with span to avoid hydration error
                 return {
                     type: 'tag',
                     name: 'span',
@@ -30,44 +27,35 @@ const parserOptions = {
     }
 };
 
-export default function SearchPage({ params }: { params: { query: string } }) {
-    const [noticias, setNoticias] = useState<Noticia[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+interface SearchPageProps {
+    params: {
+        query: string;
+    }
+}
 
-    useEffect(() => {
-        const fetchNoticias = async () => {
-            try {
-                const response = await NoticiasService.searchNoticias(params.query);
-                setNoticias(response);
-            } catch (err) {
-                if (err instanceof Error) {
-                    console.error(err.message);
-                    setError(err.message);
-                } else {
-                    console.error("Erro desconhecido", err);
-                }
-            } finally {
-                setLoading(false);
-            }
-        };
+export default async function SearchPage({ params }: SearchPageProps) {
+    let noticias: Noticia[] = [];
+    let error: string | null = null;
 
-        fetchNoticias();
-    }, [params.query]);
+    try {
+        noticias = await NoticiasService.searchNoticias(params.query);
+    } catch (err) {
+        if (err instanceof Error) {
+            console.error(err.message);
+            error = err.message;
+        } else {
+            console.error("Erro desconhecido", err);
+            error = "Erro desconhecido";
+        }
+    }
 
-    if (loading)
-        return (
-            <PageContent>
-                <PageTitle title="Carregando..." />
-            </PageContent>
-        );
-
-    if (error)
+    if (error) {
         return (
             <PageContent>
                 <p>Erro: {error}</p>
             </PageContent>
         );
+    }
 
     return (
         <PageContent>
