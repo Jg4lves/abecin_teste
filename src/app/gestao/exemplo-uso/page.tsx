@@ -48,12 +48,12 @@ export default function ExemploUso() {
 
                 <div className="mb-8">
                     <h3 className="font-medium mb-4">Exemplo com ABECIN (padrão):</h3>
-                    <BoxGestao id={1} periodo="2022-2025" />
+                    <BoxGestao id={1} periodo="2022-2025" slug="gestao-abecin-2022-2025" url="/gestao/abecin/2022-2025" />
                 </div>
 
                 <div>
                     <h3 className="font-medium mb-4">Exemplo com ABEBD:</h3>
-                    <BoxGestao id={1} periodo="2022-2025" associacao="ABEBD" />
+                    <BoxGestao id={1} periodo="2022-2025" associacao="ABEBD" slug="gestao-abebd-2022-2025" url="/gestao/abebd/2022-2025" />
                 </div>
             </div>
         </PageContent>
