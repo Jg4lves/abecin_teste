@@ -1,5 +1,7 @@
-'use client'; 
+'use client';
 
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import PageContent from "@/components/layout/PageContent";
 import PageTitle from "@/components/layout/PageTitle";
 import NoticiasService from "@/utils/services/noticias";
@@ -27,39 +29,56 @@ const parserOptions = {
     }
 };
 
-interface SearchPageProps {
-    params: {
-        query: string;
-    }
-}
+export default function SearchPage() {
+    const params = useParams();
+    const rawQuery = params?.query;
+    const query = Array.isArray(rawQuery) ? rawQuery[0] : (rawQuery || "");
 
-export default async function SearchPage({ params }: SearchPageProps) {
-    let noticias: Noticia[] = [];
-    let error: string | null = null;
+    const [noticias, setNoticias] = useState<Noticia[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    try {
-        noticias = await NoticiasService.searchNoticias(params.query);
-    } catch (err) {
-        if (err instanceof Error) {
-            console.error(err.message);
-            error = err.message;
-        } else {
-            console.error("Erro desconhecido", err);
-            error = "Erro desconhecido";
-        }
-    }
+    useEffect(() => {
+        if (!query) return;
 
-    if (error) {
+        const fetchNoticias = async () => {
+            try {
+                const response = await NoticiasService.searchNoticias(query);
+                setNoticias(response);
+                setError(null);
+            } catch (err) {
+                if (err instanceof Error) {
+                    console.error(err.message);
+                    setError(err.message);
+                } else {
+                    console.error("Erro desconhecido", err);
+                    setError("Erro desconhecido");
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchNoticias();
+    }, [query]);
+
+    if (loading)
+        return (
+            <PageContent>
+                <PageTitle title="Carregando..." />
+            </PageContent>
+        );
+
+    if (error)
         return (
             <PageContent>
                 <p>Erro: {error}</p>
             </PageContent>
         );
-    }
 
     return (
         <PageContent>
-            <PageTitle title={`Resultados da busca: "${params.query}"`} />
+            <PageTitle title={`Resultados da busca: "${query}"`} />
             <div className="flex mt-12 pt-8 flex-col gap-4">
                 {noticias.length > 0 ? (
                     <div className="flex flex-col gap-12">
@@ -91,7 +110,7 @@ export default async function SearchPage({ params }: SearchPageProps) {
                     </div>
                 ) : (
                     <p className="text-center text-lg text-gray-500">
-                        Nenhuma notícia encontrada para &quot;{params.query}&quot;.
+                        Nenhuma notícia encontrada para &quot;{query}&quot;.
                     </p>
                 )}
             </div>
